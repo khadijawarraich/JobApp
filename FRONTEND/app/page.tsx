@@ -150,7 +150,7 @@ export default function Page() {
       <Toaster />
 
       <div className="topBar">
-        <h1>Job Application Kanban Board</h1>
+        <h1>Application Sorting Board</h1>
         <button onClick={logout}>Logout</button>
       </div>
 
@@ -399,8 +399,8 @@ function Styles() {
     <style jsx global>{`
       body {
         margin: 0;
-        background: #1a2238;
-        color: white;
+        background: #ebf6f7;
+        color: black;
         font-family: Arial, sans-serif;
       }
 
@@ -419,12 +419,12 @@ function Styles() {
       }
 
       .topBar h1 {
-        color: #c084fc;
+        color: #22373a;
         font-size: 24px;
       }
 
       button {
-        background: #8b5cf6;
+        background: #6b8b90;
         color: white;
         border: none;
         border-radius: 6px;
@@ -433,7 +433,7 @@ function Styles() {
       }
 
       .form {
-        background: #191a23;
+        background: #bfcfd0;
         border: 1px solid #292a37;
         border-radius: 10px;
         padding: 15px;
@@ -458,7 +458,7 @@ function Styles() {
       }
 
       .column {
-        background: #191a23;
+        background: #d6e6e7;
         border: 1px solid #292a37;
         border-radius: 8px;
         min-height: 550px;
@@ -468,11 +468,11 @@ function Styles() {
       .column h2 {
         font-size: 14px;
         margin-bottom: 15px;
-        color: #c084fc;
+        color: #22373a;
       }
 
       .card {
-        background: #1d1e2b;
+        background: #bfcfd0;
         border: 1px solid #313248;
         border-radius: 8px;
         padding: 12px;
@@ -487,12 +487,12 @@ function Styles() {
 
       .card p {
         margin: 4px 0;
-        color: #d1d5db;
+        color: #314144;
         font-size: 13px;
       }
 
       .card a {
-        color: #60a5fa;
+        color: #3838bd;
         font-size: 13px;
       }
 
@@ -504,7 +504,7 @@ function Styles() {
       }
 
       .loginBox {
-        background: #191a23;
+        background: #bfcfd0;
         padding: 30px;
         border-radius: 12px;
         border: 1px solid #292a37;
@@ -516,7 +516,7 @@ function Styles() {
 
       .loginBox h1 {
         text-align: center;
-        color: #c084fc;
+        color: #22373a;
       }
       
       .cardActions {
@@ -532,11 +532,11 @@ function Styles() {
     }
 
     .editBtn {
-      background: #3b82f6;
+      background: #3c5249;
     }
 
     .deleteBtn {
-      background: #ef4444;
+      background: #7a4949;
     }
 
     .modalOverlay {
@@ -553,7 +553,7 @@ function Styles() {
 }
 
 .editModal {
-  background: #191a23;
+  background: #506b6d;
   border: 1px solid #313248;
   border-radius: 12px;
   padding: 24px;
@@ -564,7 +564,7 @@ function Styles() {
 }
 
 .editModal h2 {
-  color: #c084fc;
+  color: #bbabf3;
   margin-top: 0;
   text-align: center;
 }

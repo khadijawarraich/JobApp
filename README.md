@@ -33,4 +33,4 @@ Open a second terminal
     4. click on and open localhost link. (ex: "http://localhost:3000")
 
 
-assignment does not need code submitted, only slideshow that has a link to our recorded presentation of the slides + demo of website. So its fine this runs on local 
+assignment has code repo submitted on last slide of presentation. Try to make it work from RENDER site instead of local host?
