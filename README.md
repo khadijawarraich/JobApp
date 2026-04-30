@@ -1,17 +1,19 @@
-Job Application tracker
+# Job Application tracker
 
-after cloning repository:
-    in BACKEND cread .env file and paste:
-PORT=5000
+## after cloning repository:
+In BACKEND cread .env file and paste:
+`PORT=5000
 MONGO_URI=mongodb://jobtracker:kiO80sClSpv9VgUo@ac-ngxhgdt-shard-00-00.shfyhf7.mongodb.net:27017,ac-ngxhgdt-shard-00-01.shfyhf7.mongodb.net:27017,ac-ngxhgdt-shard-00-02.shfyhf7.mongodb.net:27017/jobtracker?ssl=true&replicaSet=atlas-ao2y6l-shard-0&authSource=admin&appName=Cluster0
-JWT_SECRET=jobtrackersecret123
+JWT_SECRET=jobtrackersecret123`
 
-    in FRONTEND create .env.local and paste:
+In FRONTEND create .env.local and paste:
 
-NEXT_PUBLIC_API_URL=http://localhost:5000/api
+`NEXT_PUBLIC_API_URL=http://localhost:5000/api`
 
 
-to run: open terminal
+## To run: 
+
+Open terminal
     1. cd BACKEND
     2. npm install
     3. npm run dev
