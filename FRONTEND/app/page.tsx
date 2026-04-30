@@ -234,6 +234,17 @@ export default function Page() {
 }
 
 function JobCard({ data, refresh }: { data: any; refresh: () => void }) {
+  const [isEditing, setIsEditing] = useState(false);
+
+  const [editForm, setEditForm] = useState({
+    companyName: data.companyName || "",
+    jobTitle: data.jobTitle || "",
+    location: data.location || "",
+    jobLink: data.jobLink || "",
+    notes: data.notes || "",
+    status: data.status || "Wishlist",
+  });
+
   if (!data) return null;
 
   const deleteApp = async () => {
@@ -251,9 +262,8 @@ function JobCard({ data, refresh }: { data: any; refresh: () => void }) {
     toast.success("Application deleted");
   };
 
-  const editApp = async () => {
-    const newTitle = prompt("Edit Job Title:", data.jobTitle);
-    if (!newTitle) return;
+  const saveEdit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
     await fetch(`${API_URL}/applications/${data._id}`, {
       method: "PUT",
@@ -261,47 +271,128 @@ function JobCard({ data, refresh }: { data: any; refresh: () => void }) {
         "Content-Type": "application/json",
         Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify({ jobTitle: newTitle }),
+      body: JSON.stringify(editForm),
     });
 
+    setIsEditing(false);
     refresh();
     toast.success("Application updated");
   };
 
   return (
-    <div className="card">
-      <h3>{data.companyName}</h3>
-      <p>{data.jobTitle}</p>
-      <p>{data.location}</p>
-      {data.notes && <p>{data.notes}</p>}
-      {data.jobLink && (
-        <a href={data.jobLink} target="_blank">
-          Job Link
-        </a>
-      )}
+    <>
+      <div className="card">
+        <h3>{data.companyName}</h3>
+        <p>{data.jobTitle}</p>
+        <p>{data.location}</p>
+        {data.notes && <p>{data.notes}</p>}
+        {data.jobLink && (
+          <a href={data.jobLink} target="_blank">
+            Job Link
+          </a>
+        )}
 
-      <div className="cardActions" onPointerDown={(e) => e.stopPropagation()}>
-        <button
-          type="button"
-          onClick={editApp}
-          onPointerDown={(e) => e.stopPropagation()}
-          className="editBtn"
-        >
-          Edit
-        </button>
+        <div className="cardActions" onPointerDown={(e) => e.stopPropagation()}>
+          <button
+            type="button"
+            onClick={() => setIsEditing(true)}
+            onPointerDown={(e) => e.stopPropagation()}
+            className="editBtn"
+          >
+            Edit
+          </button>
 
-        <button
-          type="button"
-          onClick={deleteApp}
-          onPointerDown={(e) => e.stopPropagation()}
-          className="deleteBtn"
-        >
-          Delete
-        </button>
+          <button
+            type="button"
+            onClick={deleteApp}
+            onPointerDown={(e) => e.stopPropagation()}
+            className="deleteBtn"
+          >
+            Delete
+          </button>
+        </div>
       </div>
-    </div>
+
+      {isEditing && (
+        <div
+            className="modalOverlay"
+            onPointerDown={(e) => e.stopPropagation()}
+        >
+          <form className="editModal" onSubmit={saveEdit}>
+            <h2>Edit Application</h2>
+
+            <input
+              placeholder="Company Name"
+              value={editForm.companyName}
+              onChange={(e) =>
+                setEditForm({ ...editForm, companyName: e.target.value })
+              }
+            />
+
+            <input
+              placeholder="Job Title"
+              value={editForm.jobTitle}
+              onChange={(e) =>
+                setEditForm({ ...editForm, jobTitle: e.target.value })
+              }
+            />
+
+            <input
+              placeholder="Location"
+              value={editForm.location}
+              onChange={(e) =>
+                setEditForm({ ...editForm, location: e.target.value })
+              }
+            />
+
+            <input
+              placeholder="Job Link"
+              value={editForm.jobLink}
+              onChange={(e) =>
+                setEditForm({ ...editForm, jobLink: e.target.value })
+              }
+            />
+
+            <textarea
+              placeholder="Notes"
+              value={editForm.notes}
+              onChange={(e) =>
+                setEditForm({ ...editForm, notes: e.target.value })
+              }
+            />
+
+            <select
+              value={editForm.status}
+              onChange={(e) =>
+                setEditForm({ ...editForm, status: e.target.value })
+              }
+            >
+              <option value="Wishlist">Wishlist</option>
+              <option value="Applied">Applied</option>
+              <option value="Interviewing">Interviewing</option>
+              <option value="Offer">Offer</option>
+              <option value="Rejected">Rejected</option>
+            </select>
+
+            <div className="modalButtons">
+              <button type="submit" className="saveBtn">
+                Save
+              </button>
+              <button
+                type="button"
+                className="cancelBtn"
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+      )}
+    </>
   );
 }
+
 
 function Styles() {
   return (
@@ -447,6 +538,67 @@ function Styles() {
     .deleteBtn {
       background: #ef4444;
     }
+
+    .modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.65);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+.editModal {
+  background: #191a23;
+  border: 1px solid #313248;
+  border-radius: 12px;
+  padding: 24px;
+  width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.editModal h2 {
+  color: #c084fc;
+  margin-top: 0;
+  text-align: center;
+}
+
+.editModal input,
+.editModal textarea,
+.editModal select {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  background: white;
+  color: black;
+}
+
+.editModal textarea {
+  min-height: 90px;
+  resize: vertical;
+}
+
+.modalButtons {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.saveBtn {
+  background: #8b5cf6;
+  flex: 1;
+}
+
+.cancelBtn {
+  background: #6b7280;
+  flex: 1;
+}
     `}</style>
   );
 }
