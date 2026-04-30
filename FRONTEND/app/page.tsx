@@ -213,7 +213,7 @@ export default function Page() {
                   .filter((item) => item.status === status)
                   .map((item) => (
                     <Draggable key={item._id} id={item._id}>
-                      <JobCard data={item} />
+                      <JobCard data={item} refresh={loadApplications} />
                     </Draggable>
                   ))}
               </div>
@@ -223,7 +223,7 @@ export default function Page() {
 
         <DragOverlay>
           {activeId ? (
-            <JobCard data={data.find((item) => item._id === activeId)} />
+            <JobCard data={data.find((item) => item._id === activeId)} refresh={loadApplications} />
           ) : null}
         </DragOverlay>
       </DndContext>
@@ -233,8 +233,40 @@ export default function Page() {
   );
 }
 
-function JobCard({ data }: { data: any }) {
+function JobCard({ data, refresh }: { data: any; refresh: () => void }) {
   if (!data) return null;
+
+  const deleteApp = async () => {
+    const confirmDelete = confirm("Delete this application?");
+    if (!confirmDelete) return;
+
+    await fetch(`${API_URL}/applications/${data._id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
+
+    refresh();
+    toast.success("Application deleted");
+  };
+
+  const editApp = async () => {
+    const newTitle = prompt("Edit Job Title:", data.jobTitle);
+    if (!newTitle) return;
+
+    await fetch(`${API_URL}/applications/${data._id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+      body: JSON.stringify({ jobTitle: newTitle }),
+    });
+
+    refresh();
+    toast.success("Application updated");
+  };
 
   return (
     <div className="card">
@@ -247,6 +279,26 @@ function JobCard({ data }: { data: any }) {
           Job Link
         </a>
       )}
+
+      <div className="cardActions" onPointerDown={(e) => e.stopPropagation()}>
+        <button
+          type="button"
+          onClick={editApp}
+          onPointerDown={(e) => e.stopPropagation()}
+          className="editBtn"
+        >
+          Edit
+        </button>
+
+        <button
+          type="button"
+          onClick={deleteApp}
+          onPointerDown={(e) => e.stopPropagation()}
+          className="deleteBtn"
+        >
+          Delete
+        </button>
+      </div>
     </div>
   );
 }
@@ -375,6 +427,26 @@ function Styles() {
         text-align: center;
         color: #c084fc;
       }
+      
+      .cardActions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .cardActions button {
+      font-size: 12px;
+      padding: 6px 8px;
+      cursor: pointer;
+    }
+
+    .editBtn {
+      background: #3b82f6;
+    }
+
+    .deleteBtn {
+      background: #ef4444;
+    }
     `}</style>
   );
 }
