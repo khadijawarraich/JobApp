@@ -286,11 +286,17 @@ function JobCard({ data, refresh }: { data: any; refresh: () => void }) {
         <p>{data.jobTitle}</p>
         <p>{data.location}</p>
         {data.notes && <p>{data.notes}</p>}
-        {data.jobLink && (
-          <a href={data.jobLink} target="_blank" rel="noopener noreferrer">
-            View Job Posting
-          </a>
-        )}
+        <a
+          href={
+            data.jobLink.startsWith("http")
+              ? data.jobLink
+              : `https://${data.jobLink}`
+          }
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          View Job Posting
+        </a>
 
         <div className="cardActions" onPointerDown={(e) => e.stopPropagation()}>
           <button
