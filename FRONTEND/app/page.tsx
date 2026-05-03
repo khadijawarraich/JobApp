@@ -150,7 +150,7 @@ export default function Page() {
       <Toaster />
 
       <div className="topBar">
-        <h1>Application Sorting Board</h1>
+        <h1>Application Tracker</h1>
         <button onClick={logout}>Logout</button>
       </div>
 
