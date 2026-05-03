@@ -287,8 +287,8 @@ function JobCard({ data, refresh }: { data: any; refresh: () => void }) {
         <p>{data.location}</p>
         {data.notes && <p>{data.notes}</p>}
         {data.jobLink && (
-          <a href={data.jobLink} target="_blank">
-            Job Link
+          <a href={data.jobLink} target="_blank" rel="noopener noreferrer">
+            View Job Posting
           </a>
         )}
 
