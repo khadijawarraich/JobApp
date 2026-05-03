@@ -7,7 +7,7 @@ require("dotenv").config();
 const app = express();
 
 app.use(cors({
-  origin: "https://jobapp-0g9z.onrender.com" // rontend URL
+  origin: "https://jobapp-frotnend.onrender.com" // rontend URL
 }));
 app.use(express.json());
 
