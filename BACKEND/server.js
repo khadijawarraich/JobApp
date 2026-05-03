@@ -6,7 +6,9 @@ require("dotenv").config();
 
 const app = express();
 
-app.use(cors());
+app.use(cors({
+  origin: "https://jobapp-0g9z.onrender.com" // rontend URL
+}));
 app.use(express.json());
 
 const applicationRoutes = require("./routes/applications");
